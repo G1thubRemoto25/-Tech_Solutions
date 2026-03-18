@@ -24,4 +24,8 @@ class Collaborator extends Model
     protected $casts = [
         'birth_date' => 'date',
     ];
+        public function contracts()
+    {
+        return $this->hasMany(Contract::class);
+    }
 }
