@@ -6,6 +6,7 @@ Sistema backend para la gestión de recursos humanos de Tech Solutions SAS, desa
 
 -  CP-001: Gestión de Colaboradores (Completado)
 -  CP-002: Gestión de Contratos (Completado)
+-  CP-003: Gestión de Prórrogas (Completado)
 
 ---
 
@@ -44,8 +45,13 @@ Sistema backend para la gestión de recursos humanos de Tech Solutions SAS, desa
 -  `editar contratos`
 -  `eliminar contratos`
 
+#### CP-003: Prórrogas
+-  `ver prorrogas`
+-  `crear prorrogas`
+-  `editar prorrogas`
+-  `eliminar prorrogas`
+
 #### Próximos Módulos
-- Prórrogas: ver, crear, editar, eliminar
 - Terminaciones: ver, crear, editar, eliminar
 
 ---
@@ -84,18 +90,29 @@ Sistema backend para la gestión de recursos humanos de Tech Solutions SAS, desa
 
 ---
 
+### **Tabla: prorrogas (extensions)**
+
+| Campo | Tipo | Descripción |
+|-------|------|-------------|
+| id | bigint | Identificador único |
+| contract_id | bigint (FK) | Relación con contrato |
+| type | string | Tipo de prórroga (tiempo o valor) |
+| extra_time | integer | Tiempo adicional (meses) |
+| extra_value | decimal | Valor adicional |
+| observations | text | Observaciones |
+| timestamps | timestamp | created_at, updated_at |
+
+---
+
 ##  Tests
 
 ### **Ejecutar Tests**
 ```bash
-# Ejecutar todos los tests
 php artisan test
 
-# Tests de colaboradores
 php artisan test --filter CollaboratorTest
-
-# Tests de contratos
 php artisan test --filter ContractTest
+php artisan test --filter ProrrogaTest
 Resultado Esperado
 CP-001: Colaboradores
 PASS  Tests\Feature\CollaboratorTest
@@ -114,6 +131,13 @@ PASS  Tests\Feature\ContractTest
 ✓ puede actualizar contrato existente
 
 Tests: 4 passed
+CP-003: Prórrogas
+PASS  Tests\Feature\ProrrogaTest
+✓ puede crear prorroga para contrato valido
+✓ actualiza correctamente la fecha de finalizacion
+✓ rechaza prorroga para contrato finalizado
+
+Tests: 3 passed
 Instalación
 Requisitos Previos
 
@@ -126,18 +150,13 @@ MySQL 8.0+
 Git
 
 Pasos de Instalación
-bash
-# Clonar repositorio
 git clone https://github.com/G1thubRemoto25/-Tech_Solutions.git
 cd techsolutions-rrhh
 
-# Instalar dependencias
 composer install
 
-# Copiar archivo de entorno
 cp .env.example .env
 
-# Configurar base de datos en .env
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
@@ -145,13 +164,10 @@ DB_DATABASE=techsolutions_rrhh
 DB_USERNAME=root
 DB_PASSWORD=
 
-# Generar key
 php artisan key:generate
 
-# Ejecutar migraciones y seeders
 php artisan migrate --seed
 
-# Ejecutar tests
 php artisan test
 Usuarios de Prueba
 Rol	Email	Password
@@ -164,58 +180,55 @@ Consultor	consultor@techsolutions.com
 Git Flow
 Estructura de Ramas
 
-main - Código de producción estable
+main
 
-develop - Rama principal de desarrollo
+develop
 
-feature/* - Nuevas funcionalidades
+feature/*
 
-release/* - Preparación de versiones
+release/*
 
-hotfix/* - Correcciones urgentes
+hotfix/*
 
 Ramas Actuales
 
-main - Versión estable v1.0.0
+main - v1.0.0
 
-develop - Desarrollo activo
+develop
 
-feature/gestionar-colaboradores - Completado
+feature/gestionar-colaboradores
 
-feature/gestionar-contratos - Completado
+feature/gestionar-contratos
+
+feature/gestionar-prorrogas
 
 Tags
 
-v1.0.0 - Release CP-001: Gestión de Colaboradores
+v1.0.0 - CP-001
 
-v1.1.0 - Release CP-002: Gestión de Contratos
+v1.1.0 - CP-002
+
+v1.2.0 - CP-003
 
 Estructura del Proyecto
 techsolutions-rrhh
 ├── app
 │   ├── Models
 │   │   ├── Collaborator.php
-│   │   └── Contract.php
+│   │   ├── Contract.php
+│   │   └── Prorroga.php
 │   └── Http
 │       └── Controllers
 │           ├── CollaboratorController.php
-│           └── ContractController.php
+│           ├── ContractController.php
+│           └── ProrrogaController.php
 ├── database
 │   ├── migrations
-│   │   ├── [timestamp]_create_collaborators_table.php
-│   │   └── [timestamp]_create_contracts_table.php
 │   ├── factories
-│   │   ├── CollaboratorFactory.php
-│   │   └── ContractFactory.php
 │   └── seeders
-│       ├── DatabaseSeeder.php
-│       ├── RolePermissionSeeder.php
-│       └── CollaboratorSeeder.php
 ├── tests
 │   └── Feature
 │       ├── CollaboratorTest.php
-│       └── ContractTest.php
+│       ├── ContractTest.php
+│       └── ProrrogaTest.php
 └── README.md
-
-
-

@@ -32,4 +32,24 @@ class Contract extends Model
     {
         return $this->belongsTo(Collaborator::class);
     }
+        public function extensions()
+    {
+        return $this->hasMany(ContractExtension::class);
+    }
+
+    /**
+     * Verificar si el contrato está activo
+     */
+    public function isActive()
+    {
+        return $this->status === 'Activo';
+    }
+
+    /**
+     * Verificar si el contrato puede tener prórrogas
+     */
+    public function canBeExtended()
+    {
+        return $this->isActive() && in_array($this->contract_type, ['Fijo', 'Prestación de Servicios']);
+    }
 }
