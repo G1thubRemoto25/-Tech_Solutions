@@ -1,6 +1,12 @@
 
 # Caso de Prueba 1: Registro de un nuevo colaborador
 
+Prueba: Verificar que se puede crear un nuevo colaborador con datos válidos.
+Prueba: Verificar que el sistema rechaza la creación de un colaborador con un número de documento duplicado.
+Prueba: Verificar que se puede actualizar la información de un colaborador existente.
+Prueba: Verificar que se puede obtener el listado de todos los colaboradores.
+Prueba: Verificar que se puede eliminar (o desactivar mediante soft-delete) un colaborador
+
 ## 1. ID del Caso
 CP-COL-101
 

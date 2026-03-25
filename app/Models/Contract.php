@@ -52,4 +52,38 @@ class Contract extends Model
     {
         return $this->isActive() && in_array($this->contract_type, ['Fijo', 'Prestación de Servicios']);
     }
+
+        public function termination()
+    {
+        return $this->hasOne(ContractTermination::class);
+    }
+
+    /**
+     * Terminar un contrato
+     */
+    public function terminate(string $reason): void
+    {
+        if ($this->status === 'Terminado') {
+            throw new \Exception('El contrato ya está terminado');
+        }
+
+        if ($this->status === 'Finalizado') {
+            throw new \Exception('El contrato ya finalizó por su fecha de término');
+        }
+
+        $this->update(['status' => 'Terminado']);
+        
+        $this->termination()->create([
+            'termination_date' => now(),
+            'reason' => $reason
+        ]);
+    }
+
+    /**
+     * Verificar si el contrato puede ser terminado
+     */
+    public function canBeTerminated(): bool
+    {
+        return $this->status !== 'Terminado' && $this->status !== 'Finalizado';
+    }
 }
